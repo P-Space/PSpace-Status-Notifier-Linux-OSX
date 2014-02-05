@@ -18,35 +18,44 @@ def DisplayMessage(title, message):
 
 def EventCheck():
 	global olddate
-	url = urllib2.urlopen('http://pspace.dyndns.org:88/report/?json&limit=1')
-	if url.getcode() != 200:
-		print 'problem occured. http status:', url.getcode()
-	else:
-		event = json.loads(url.read())
-		newdate = int(event['events'][0]['t'])
-		if(olddate!=newdate):
-			DisplayMessage('P-Space door event',event['events'][0]['extra'])
-			olddate=newdate
+	try:
+		url = urllib2.urlopen('http://pspace.dyndns.org:88/report/?json&limit=1')
+		if url.getcode() != 200:
+			print 'problem occured. http status:', url.getcode()
+		else:
+			event = json.loads(url.read())
+			newdate = int(event['events'][0]['t'])
+			if(olddate!=newdate):
+				DisplayMessage('P-Space door event',event['events'][0]['extra'])
+				olddate=newdate
+	except URLError:
+		olddate=0
 
 def StatusCheck():
 	global oldstatus
-	url = urllib2.urlopen('http://www.p-space.gr/status')
-	if url.getcode() != 200:
-		print 'problem occured. http status:', url.getcode()
-	else:
-		newstatus = int(url.read())
-		if(oldstatus!=newstatus):
-			if(newstatus==1):
-				status='open'
-			else:
-				status='closed'
-			oldstatus=newstatus
-			DisplayMessage('P-Space status changed','P-Space is now '+status )
+	try:
+		url = urllib2.urlopen('http://www.p-space.gr/status')
+		if url.getcode() != 200:
+			print 'problem occured. http status:', url.getcode()
+		else:
+			newstatus = int(url.read())
+			if(oldstatus!=newstatus):
+				if(newstatus==1):
+					status='open'
+				else:
+					status='closed'
+				oldstatus=newstatus
+				DisplayMessage('P-Space status changed','P-Space is now '+status)
+	except URLError:
+		oldstatus=-1
 
 def SetOpen(set):
-	url = urllib2.urlopen('http://www.p-space.gr/status/set.php?'+set)
-	if url.getcode() != 200:
-		print 'problem occured. http status:', r1.status, r1.reason
+	try:
+		url = urllib2.urlopen('http://www.p-space.gr/status/set.php?'+set)
+		if url.getcode() != 200:
+			print 'problem occured. http status:', r1.status, r1.reason
+	except URLError:
+		print 'URL exception occured.'
 
 def tick():
 	EventCheck()
