@@ -19,7 +19,7 @@ def DisplayMessage(title, message):
 def EventCheck():
 	global olddate
 	try:
-		url = urllib2.urlopen('http://pspace.dyndns.org:88/report/?json&limit=1')
+		url = urllib2.urlopen('http://pspace.dyndns.org:49004/report/?json&limit=1')
 		if url.getcode() != 200:
 			print 'problem occured. http status:', url.getcode()
 		else:
