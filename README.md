@@ -8,4 +8,4 @@ Execute: python notifier.py -r
 Help/Options: python notifier.py -h
 
 **OS X Users:**  
-Please install *terminal-notifier* from *brew* in order to see notifications.
+Please install `terminal-notifier` from `brew` in order to see notifications, typing `brew install terminal-notifier`
