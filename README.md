@@ -1,5 +1,5 @@
-PSpace-Status-Notifier-Linux
-============================
+PSpace-Status-Notifier-Linux-OSX
+================================
 
 Status and event notifier for Patras' hackerspace written in python for linux and OS X systems
 
