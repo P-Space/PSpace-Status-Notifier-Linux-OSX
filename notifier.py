@@ -15,7 +15,6 @@ olddate=0
 os_type=''
 
 def DisplayMessage(title, message):
-	global home
 	if os_type == 'Linux':
 		call(['notify-send', title, message,'-t','3000','-i',folder+'/icon.png'])
 	elif os_type == 'Darwin':
@@ -25,8 +24,15 @@ def DisplayMessage(title, message):
 
 def EventCheck():
 	global olddate
+	current_ip = urllib2.urlopen('http://ip.42.pl/raw').read()
+
+	if current_ip != '195.97.37.145':
+		addr='http://pspace.dyndns.org:49004/report/?json&limit=1'
+	else:
+		addr='http://192.168.1.41/report/?json&limit=1'
+		
 	try:
-		url = urllib2.urlopen('http://pspace.dyndns.org:49004/report/?json&limit=1')
+		url = urllib2.urlopen(addr)
 		if url.getcode() != 200:
 			print 'problem occured. http status:', url.getcode()
 		else:

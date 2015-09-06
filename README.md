@@ -6,3 +6,6 @@ Status and event notifier for Patras' hackerspace written in python for linux an
 v 0.2  
 Execute: python notifier.py -r  
 Help/Options: python notifier.py -h
+
+**OS X Users:**  
+Please install *terminal-notifier* from *brew* in order to see notifications.
