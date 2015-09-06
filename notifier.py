@@ -1,19 +1,26 @@
 import argparse
 import urllib2
+from urllib2 import URLError
 import json
 from subprocess import call
 import os
 import threading
 import time
+import platform
 
 #home = getenv("HOME")
 folder = os.path.dirname(os.path.realpath(__file__))
 oldstatus=-1
 olddate=0
+os_type=''
 
 def DisplayMessage(title, message):
 	global home
-	call(['notify-send', title, message,'-t','3000','-i',folder+'/icon.png'])
+	if os_type == 'Linux':
+		call(['notify-send', title, message,'-t','3000','-i',folder+'/icon.png'])
+	elif os_type == 'Darwin':
+		call(['terminal-notifier', '-title', title, '-message',message,'-appIcon',folder+'/icon.png'])
+	#call(['notify-send', title, message,'-t','3000','-i',folder+'/icon.png'])
 	#call['notify-send', title+' '+message+', '+displ_time+' --hint=int:transient:1  -i ~/.pspace-notifier/pspace.png']
 
 def EventCheck():
@@ -62,12 +69,13 @@ def tick():
 	StatusCheck()
 
 
-parser = argparse.ArgumentParser(description='P-Space Status and Event Notifier for Linux - eparon 2014 v0.1')
+parser = argparse.ArgumentParser(description='P-Space Status and Event Notifier for Linux and OS X - eparon 2014 v0.2')
 parser.add_argument('-t','--time', help='Specify the refresh interval in seconds',type=int)
 parser.add_argument('-r','--run', help='Set this flag in order to run in the background. Otherwise will only check once for status and last event.', action='store_true')
 parser.add_argument('-s','--set',help='Set status - Use type \'open\' or \'close\'', choices=['open','close'])
 
 args = parser.parse_args()
+os_type=platform.system()
 
 if args.set:
 	SetOpen(args.set)
@@ -82,4 +90,3 @@ if args.run:
 		time.sleep(ts)
 else:
 	tick()
-
